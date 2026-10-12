@@ -59,13 +59,29 @@ Claude ──MCP (stdio)──> server/mcp_server.py ──JSON over 127.0.0.1:4
 * **Real Color-page grades with power windows** (`color_grade_drx`): wheels/saturation/contrast plus circle windows,
   written offline as a .drx by the optional [samuelgursky advanced codec](https://github.com/samuelgursky/davinci-resolve-mcp)
   (Node, MIT), fixed up for Resolve 21's window format, applied, and read back from Resolve's own export. Needs Node and
-  that repo cloned next to this one (`..esolve-mcp-advanced`, `npm install` in `resolve-advanced`) or
+  that repo cloned next to this one (`..
+esolve-mcp-advanced`, `npm install` in `resolve-advanced`) or
   `RESOLVE_MCP_ADVANCED` set. Its own MCP server can be registered too (`davinci-resolve-advanced`), but use
   `color_grade_drx` for windows: its raw windows do not render on 21.0.4 (see COVERAGE.md).
 * **No autostart**: Resolve 21.0.4 does not run scripts from `Fusion\Scripts\Start` (tested), so the bridge is
   started from the menu after every Resolve launch.
 * **State**: `get_full_state` (saved snapshots) and `diff_state` to see exactly what changed.
 * See [COVERAGE.md](COVERAGE.md) for the honest yes/no/workaround matrix and the quirks measured on 21.0.4.
+
+### Comparison with other tools
+Based on reviewing the repos in October 2026 (Tooflex only from its directory listings).
+
+| | **resolve-mcp** (this) | [samuelgursky](https://github.com/samuelgursky/davinci-resolve-mcp) | [kerwilgil](https://github.com/kerwilgil/davinci-resolve-mcp) | Tooflex | Computer-use (clicking the UI) |
+|---|---|---|---|---|---|
+| Runs on Resolve **Free** | ✅ 21.0.4, in-app bridge | ✅ has a Free bridge | ✅ | ❌ needs Studio | ✅ any version |
+| API coverage | All 381 live methods via `api_call` + 75 tools | Very broad | Medium | Basic (project, timeline, media, color) | Anything visible on screen |
+| Read-back after every write | ✅ | Partial (large list of measured API traps) | ❌ | ❌ | Needs screenshots |
+| Pixel verification | ✅ `frame_preview` + pixel tests | Scope reads for grades | ❌ | ❌ | Looks at screenshots |
+| State snapshots / diff / op log | ✅ | Partial | ❌ | ❌ | ❌ |
+| Safety: confirm for destructive ops, .drp backup, dry-run | ✅ | Partial | ❌ bridge has no auth + CORS `*` | Unknown | Risk of misclicks |
+| Power windows / qualifiers | ✅ circle window render-verified on 21.0.4 | ✅ very complete DRX writer, but windows do not render on 21.0.4 as written | ❌ | ❌ | ✅ by hand, slow |
+| Workarounds for API gaps (razor, transitions, speed, keyframes, audio) | ✅ verified | ✅ many | Few | ❌ | ✅ slow, error-prone |
+| Speed | Fast (~2 ms per call) | Fast | Fast | Fast | Very slow |
 
 ### Safety
 * Every write tool reads the value back and returns `{requested, actual, ok}`. `ok:false` means Resolve ignored
@@ -76,6 +92,7 @@ Claude ──MCP (stdio)──> server/mcp_server.py ──JSON over 127.0.0.1:4
 * Socket listens on 127.0.0.1 only, with a per-session token. No cloud calls, no telemetry.
 * `python_exec` (raw Python inside Resolve) is **off** unless you set `"allow_exec": true` in
   `%LOCALAPPDATA%\ResolveMCP\config.json`.
+* Found a security problem? See [SECURITY.md](SECURITY.md) - please report it privately.
 
 ### Tests
 ```
@@ -140,11 +157,27 @@ Bản Resolve **Free** chặn script chạy từ bên ngoài, nhưng vẫn cho c
 * **Grade thật trên trang Color, có power window** (`color_grade_drx`): bánh xe màu/saturation/contrast và cửa sổ tròn,
   tạo file .drx offline bằng bộ codec "advanced" của samuelgursky (Node, MIT, tuỳ chọn), sửa sang định dạng window của
   Resolve 21, áp dụng rồi đọc lại từ chính file Resolve xuất ra. Cần Node và repo đó nằm cạnh repo này
-  (`..esolve-mcp-advanced`, chạy `npm install` trong `resolve-advanced`) hoặc đặt biến `RESOLVE_MCP_ADVANCED`.
+  (`..
+esolve-mcp-advanced`, chạy `npm install` trong `resolve-advanced`) hoặc đặt biến `RESOLVE_MCP_ADVANCED`.
 * **Không tự khởi động**: Resolve 21.0.4 không chạy script trong `Fusion\Scripts\Start` (đã thử), nên sau mỗi lần mở
   Resolve cần bấm menu để bật bridge.
 * **Trạng thái thật**: `get_full_state` (lưu snapshot) và `diff_state` để thấy chính xác cái gì đã thay đổi.
 * Bảng đầy đủ *làm được / cách thay thế / không thể* nằm trong [COVERAGE.md](COVERAGE.md).
+
+### So sánh với các tool khác
+Dựa trên lần xem các repo vào tháng 10/2026 (Tooflex chỉ dựa trên trang danh mục).
+
+| | **resolve-mcp** (repo này) | [samuelgursky](https://github.com/samuelgursky/davinci-resolve-mcp) | [kerwilgil](https://github.com/kerwilgil/davinci-resolve-mcp) | Tooflex | Computer-use (bấm giao diện) |
+|---|---|---|---|---|---|
+| Chạy trên Resolve **Free** | ✅ 21.0.4, bridge trong app | ✅ có bridge cho Free | ✅ | ❌ cần Studio | ✅ mọi bản |
+| Độ phủ API | Toàn bộ 381 hàm qua `api_call` + 75 tool | Rất rộng | Trung bình | Cơ bản | Mọi thứ thấy trên màn hình |
+| Đọc lại sau mỗi lệnh ghi | ✅ | Một phần | ❌ | ❌ | Phải chụp màn hình |
+| Kiểm tra bằng điểm ảnh | ✅ | Đọc scope khi grade | ❌ | ❌ | Nhìn ảnh chụp |
+| Snapshot / diff / nhật ký | ✅ | Một phần | ❌ | ❌ | ❌ |
+| An toàn (xác nhận khi xoá, backup .drp, dry-run) | ✅ | Một phần | ❌ cổng không xác thực + CORS `*` | Không rõ | Dễ bấm nhầm |
+| Power window / qualifier | ✅ cửa sổ tròn đã kiểm chứng render trên 21.0.4 | ✅ viết DRX rất đầy đủ, nhưng cửa sổ không render trên 21.0.4 | ❌ | ❌ | ✅ làm tay, chậm |
+| Workaround cho chỗ API thiếu | ✅ có kiểm chứng | ✅ nhiều | Ít | ❌ | ✅ chậm, dễ lỗi |
+| Tốc độ | Nhanh (~2 ms/lệnh) | Nhanh | Nhanh | Nhanh | Rất chậm |
 
 ### An toàn
 * Mọi lệnh ghi đều **đọc lại** giá trị và trả về `{requested, actual, ok}`. `ok:false` nghĩa là Resolve không áp
@@ -154,6 +187,7 @@ Bản Resolve **Free** chặn script chạy từ bên ngoài, nhưng vẫn cho c
 * Mọi lệnh được ghi nhật ký vào `%LOCALAPPDATA%\ResolveMCP\oplog.jsonl`.
 * Chỉ mở cổng trên 127.0.0.1, không gửi gì lên mạng, không telemetry.
 * `python_exec` (chạy Python tùy ý trong Resolve) **tắt** mặc định.
+* Phát hiện lỗ hổng bảo mật? Xem [SECURITY.md](SECURITY.md) - vui lòng báo riêng, không mở issue công khai.
 
 ### Kiểm thử
 ```
