@@ -12,6 +12,10 @@
 Let Claude (Claude Desktop / Claude Code) control DaVinci Resolve through the official scripting API, verify every
 change by reading it back, and always know the real state of the project.
 
+**AI video editing for DaVinci Resolve Free**: automate editing, color grading (including power windows) and
+rendering in DaVinci Resolve 21.0.4 Free with Claude AI through the Model Context Protocol (MCP).
+Website: <https://justhung69.github.io/resolve-mcp/>
+
 *Tiếng Việt ở phía dưới.*
 
 ---
@@ -123,6 +127,9 @@ including pixel checks of graded and keyframed frames).
 ---
 
 ## Tiếng Việt
+
+**Dựng phim bằng AI trên DaVinci Resolve bản Free**: dùng Claude AI để tự động cắt ghép, chỉnh màu (có power window) và
+xuất video trong DaVinci Resolve 21.0.4 Free, qua giao thức MCP.
 
 ### Cách hoạt động
 Bản Resolve **Free** chặn script chạy từ bên ngoài, nhưng vẫn cho chạy script Python khi bấm từ menu

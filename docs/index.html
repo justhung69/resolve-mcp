@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DaVinci Resolve MCP for Claude – works on Resolve Free</title>
+<meta name="description" content="Open-source MCP server that lets Claude control DaVinci Resolve 21.0.4 FREE on Windows: edit timelines, color grade with power windows, render, and verify every change. Điều khiển DaVinci Resolve bản Free bằng Claude AI.">
+<meta name="keywords" content="DaVinci Resolve, DaVinci Resolve Free, MCP, Model Context Protocol, Claude, Claude AI, AI video editing, automate DaVinci Resolve, Resolve scripting API, color grading, power window, DRX">
+<link rel="canonical" href="https://justhung69.github.io/resolve-mcp/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="DaVinci Resolve MCP – Claude controls Resolve Free">
+<meta property="og:description" content="75 tools, verified writes, state diff, Color-page grades with power windows. Runs on DaVinci Resolve 21.0.4 Free.">
+<meta property="og:url" content="https://justhung69.github.io/resolve-mcp/">
+<meta property="og:image" content="https://justhung69.github.io/resolve-mcp/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"resolve-mcp",
+ "description":"MCP server that lets Claude control DaVinci Resolve 21.0.4 Free on Windows.",
+ "codeRepository":"https://github.com/justhung69/resolve-mcp","programmingLanguage":"Python",
+ "license":"https://opensource.org/licenses/MIT","author":{"@type":"Person","name":"Bùi Xuân Hưng"},
+ "keywords":"DaVinci Resolve, MCP, Claude, AI video editing"}
+</script>
+<style>
+:root{--bg:#f6f7fb;--fg:#15171c;--muted:#5b6170;--card:#fff;--line:#e3e6ee;--accent:#e2563d;--accent2:#3b6fd8;--code:#eef1f7}
+@media (prefers-color-scheme:dark){:root{--bg:#121318;--fg:#e9ebf1;--muted:#a1a7b5;--card:#1b1d24;--line:#2b2e38;--accent:#ff6a4d;--accent2:#7aa2ff;--code:#22252e}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+header{padding:56px 0 32px}
+.tag{display:inline-block;font-size:13px;font-weight:600;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:2px 10px}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:16px 0 12px}
+.lead{font-size:18px;color:var(--muted);max-width:720px}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.btn{display:inline-block;padding:10px 18px;border-radius:8px;font-weight:600;text-decoration:none}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.ghost{border:1px solid var(--line);color:var(--fg);background:var(--card)}
+section{padding:28px 0;border-top:1px solid var(--line)}
+h2{font-size:24px;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card h3{margin:0 0 6px;font-size:16px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+code,pre{background:var(--code);border-radius:6px;font-family:ui-monospace,Consolas,monospace;font-size:14px}
+code{padding:1px 5px}
+pre{padding:14px;overflow-x:auto}
+ol li{margin:6px 0}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:640px}
+th,td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+th{background:var(--card)}
+.warn{border-left:4px solid var(--accent);background:var(--card);padding:12px 16px;border-radius:6px}
+footer{padding:32px 0 48px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+a{color:var(--accent2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <span class="tag">Works on DaVinci Resolve Free</span>
+  <h1>Let Claude edit, grade and render in DaVinci Resolve</h1>
+  <p class="lead">An open-source <strong>MCP server</strong> (Model Context Protocol) that gives Claude real control over
+  <strong>DaVinci Resolve 21.0.4 Free</strong> on Windows. It reads every change back, so Claude always knows the true
+  state of your project.</p>
+  <div class="btns">
+    <a class="btn primary" href="https://github.com/justhung69/resolve-mcp">View on GitHub</a>
+    <a class="btn ghost" href="https://github.com/justhung69/resolve-mcp/releases/latest">Download latest release</a>
+    <a class="btn ghost" href="https://github.com/justhung69/resolve-mcp/blob/main/COVERAGE.md">What it can &amp; can't do</a>
+  </div>
+</header>
+
+<section>
+  <h2>Features</h2>
+  <div class="grid">
+    <div class="card"><h3>75 tools + full API</h3><p>Projects, media pool, timelines, Inspector, Fusion, render queue, and all 381 scripting methods via <code>api_call</code>.</p></div>
+    <div class="card"><h3>Verified writes</h3><p>Every write returns <code>{requested, actual, ok}</code>. Snapshots, <code>diff_state</code> and an op log show exactly what changed.</p></div>
+    <div class="card"><h3>Color grading with power windows</h3><p>Wheels, saturation and circle windows written as DRX and applied on the Color page. The result is verified by pixels.</p></div>
+    <div class="card"><h3>Workarounds for API gaps</h3><p>Razor, trims, transitions and speed changes on a new timeline, plus Fusion keyframes and offline audio fades/normalize.</p></div>
+    <div class="card"><h3>Safe by default</h3><p><code>confirm=true</code> for destructive actions, a .drp backup first, dry-run, backup grade versions.</p></div>
+    <div class="card"><h3>Local only</h3><p>Loopback socket with a per-session token. No cloud calls, no telemetry.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Quick start</h2>
+  <div class="warn">Needs <strong>DaVinci Resolve 21.0.4 Free</strong>. Resolve 21.1+ Free removed Python scripting, so do not update.</div>
+  <ol>
+    <li>Clone the repo and run <code>install.ps1</code> in PowerShell.</li>
+    <li>Restart Claude Desktop.</li>
+    <li>In Resolve, open a project and click <strong>Workspace → Scripts → ClaudeBridge</strong>.</li>
+    <li>Ask Claude, e.g. <em>"Cut clip 3 at 5 seconds and add a cross dissolve"</em> or <em>"Brighten the subject on the left with a soft circle window and show me the frame"</em>.</li>
+  </ol>
+<pre>git clone https://github.com/justhung69/resolve-mcp
+cd resolve-mcp
+powershell -ExecutionPolicy Bypass -File install.ps1</pre>
+</section>
+
+<section>
+  <h2>Compared with other Resolve tools for Claude</h2>
+  <div class="tablewrap"><table>
+    <tr><th></th><th>resolve-mcp</th><th>samuelgursky</th><th>kerwilgil</th><th>Tooflex</th><th>Computer-use</th></tr>
+    <tr><td>Resolve Free</td><td>✅ 21.0.4</td><td>✅</td><td>✅</td><td>❌ Studio</td><td>✅</td></tr>
+    <tr><td>Read-back after every write</td><td>✅</td><td>Partial</td><td>❌</td><td>❌</td><td>Screenshots</td></tr>
+    <tr><td>Pixel verification</td><td>✅</td><td>Scope reads</td><td>❌</td><td>❌</td><td>Screenshots</td></tr>
+    <tr><td>Power windows render on 21.0.4</td><td>✅</td><td>❌ as written</td><td>❌</td><td>❌</td><td>✅ slow</td></tr>
+    <tr><td>Safety (confirm, backup, dry-run)</td><td>✅</td><td>Partial</td><td>❌ no auth</td><td>Unknown</td><td>Misclick risk</td></tr>
+  </table></div>
+  <p><a href="https://github.com/justhung69/resolve-mcp#comparison-with-other-tools">Full comparison in the README</a></p>
+</section>
+
+<section lang="vi">
+  <h2>Tiếng Việt</h2>
+  <p><strong>resolve-mcp</strong> là MCP server mã nguồn mở giúp <strong>Claude AI điều khiển DaVinci Resolve bản Free</strong>
+  (21.0.4) trên Windows:</p>
+  <ul>
+    <li><strong>Dựng phim:</strong> cắt, trim, transition, đổi tốc độ.</li>
+    <li><strong>Màu:</strong> chỉnh màu có power window.</li>
+    <li><strong>Xuất:</strong> render.</li>
+    <li><strong>Kiểm tra:</strong> mọi thay đổi đều được đọc lại để xác nhận.</li>
+  </ul>
+  <p>Cài bằng <code>install.ps1</code>. Sau đó, mỗi lần mở Resolve, bấm
+  <strong>Workspace → Scripts → ClaudeBridge</strong>. Hướng dẫn đầy đủ bằng tiếng Việt có trong
+  <a href="https://github.com/justhung69/resolve-mcp#tiếng-việt">README</a>.</p>
+</section>
+
+<footer>
+  MIT License · Made by Bùi Xuân Hưng ·
+  <a href="https://github.com/justhung69/resolve-mcp">github.com/justhung69/resolve-mcp</a><br>
+  DaVinci Resolve is a trademark of Blackmagic Design. This project is not affiliated with Blackmagic Design.
+</footer>
+</div>
+</body>
+</html>
