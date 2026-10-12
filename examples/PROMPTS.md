@@ -43,6 +43,8 @@ Start every session with the bridge running (Workspace > Scripts > ClaudeBridge)
 
 ## Beyond the API / Vượt giới hạn API
 - "Give clips 1–5 a warm filmic look: lift shadows slightly blue, warm highlights, soft S-curve, slightly desaturate greens, and protect skin tones. Show me a preview frame." *(color_grade_lut + frame_preview)*
+- "Brighten the subject in the left third of the frame with a soft circular window (gain master 1.3, softness 10), then show me the frame." *(color_grade_drx with window center_x/center_y + frame_preview)*
+- "Làm sáng vùng chủ thể ở 1/3 bên trái khung bằng cửa sổ tròn mềm, rồi cho tôi xem ảnh kết quả." *(color_grade_drx + frame_preview)*
 - "Slowly push in on the interview clip from 100% to 115% over its whole length, and fade it in over the first 12 frames." *(keyframe_transform)*
 - "Duck the music clip by 10 dB between 00:00:05 and 00:00:12, fade it out over the last 2 seconds and normalise to -1 dBFS." *(audio_process)*
 - "Làm tông ấm kiểu phim cho 5 clip đầu, giữ màu da tự nhiên, rồi cho mình xem ảnh thử."

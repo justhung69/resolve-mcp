@@ -104,3 +104,26 @@ def region_mean(path, fx0, fy0, fx1, fy1, step=4):
             total += v[0] if len(v) == 1 else 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]
             n += 1
     return total / n
+
+
+def dark_bbox(path, below, step=8):
+    """Bounding box (fractions x0, y0, x1, y1) and area fraction of pixels with luma < `below`. One decode."""
+    w, h, depth, chans, rows = read_png(path)
+    scale = 255.0 if depth == 8 else 65535.0
+    size = depth // 8
+    xs, ys, n, hit = [], [], 0, 0
+    for y in range(0, h, step):
+        row = rows[y]
+        for x in range(0, w, step):
+            o = x * chans * size
+            v = [int.from_bytes(row[o + k * size:o + (k + 1) * size], "big") / scale for k in range(min(chans, 3))]
+            luma = v[0] if len(v) == 1 else 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]
+            n += 1
+            if luma < below:
+                hit += 1
+                xs.append(x)
+                ys.append(y)
+    if not hit:
+        return None
+    return {"bbox": (round(min(xs) / w, 3), round(min(ys) / h, 3), round(max(xs) / w, 3), round(max(ys) / h, 3)),
+            "area": round(hit / n, 4)}

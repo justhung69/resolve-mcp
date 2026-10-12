@@ -20,7 +20,7 @@ Claude ──MCP (stdio)──> server/mcp_server.py ──JSON over 127.0.0.1:4
 * `bridge/ClaudeBridge.py` – you start it once per Resolve session from the Scripts menu. It never returns: it
   serves a loopback-only socket protected by a random token. Its logic lives in `bridge_core.py`, which can be
   hot-reloaded (`bridge_reload`) without clicking again.
-* `server/mcp_server.py` – the MCP server Claude talks to (74 tools).
+* `server/mcp_server.py` – the MCP server Claude talks to (75 tools).
 
 > **Version note (measured):** this needs **Resolve 21.0.x Free** (tested on 21.0.4.5) or any Studio version.
 > Resolve **21.1+ Free** removed Python from the Scripts menu, so the bridge cannot start there. Keep
@@ -56,6 +56,14 @@ Claude ──MCP (stdio)──> server/mcp_server.py ──JSON over 127.0.0.1:4
 * **Beyond the API**: colour wheels/curves/qualifiers compiled into a LUT (`color_grade_lut`), keyframed zoom/position/
   rotation/opacity through Fusion (`keyframe_transform`), offline audio gain/automation/fades/normalise
   (`audio_process`), and `frame_preview` so Claude can *look* at the result.
+* **Real Color-page grades with power windows** (`color_grade_drx`): wheels/saturation/contrast plus circle windows,
+  written offline as a .drx by the optional [samuelgursky advanced codec](https://github.com/samuelgursky/davinci-resolve-mcp)
+  (Node, MIT), fixed up for Resolve 21's window format, applied, and read back from Resolve's own export. Needs Node and
+  that repo cloned next to this one (`..esolve-mcp-advanced`, `npm install` in `resolve-advanced`) or
+  `RESOLVE_MCP_ADVANCED` set. Its own MCP server can be registered too (`davinci-resolve-advanced`), but use
+  `color_grade_drx` for windows: its raw windows do not render on 21.0.4 (see COVERAGE.md).
+* **No autostart**: Resolve 21.0.4 does not run scripts from `Fusion\Scripts\Start` (tested), so the bridge is
+  started from the menu after every Resolve launch.
 * **State**: `get_full_state` (saved snapshots) and `diff_state` to see exactly what changed.
 * See [COVERAGE.md](COVERAGE.md) for the honest yes/no/workaround matrix and the quirks measured on 21.0.4.
 
@@ -74,7 +82,7 @@ Claude ──MCP (stdio)──> server/mcp_server.py ──JSON over 127.0.0.1:4
 .venv\Scripts\python.exe tests\run_tests.py
 ```
 Creates a throwaway project `ClaudeMCP_Test_<time>`, generates its own media, exercises every tool group through
-the MCP layer, never starts a render, and prints a PASS/FAIL table (last run: **94/94 passed** on 21.0.4.5 Free,
+the MCP layer, never starts a render, and prints a PASS/FAIL table (last run: **99/99 passed** on 21.0.4.5 Free,
 including pixel checks of graded and keyframed frames).
 `tools\gen_coverage.py` regenerates the per-method coverage table against your live Resolve.
 
@@ -95,7 +103,7 @@ Bản Resolve **Free** chặn script chạy từ bên ngoài, nhưng vẫn cho c
 
 * `ClaudeBridge.py` – chạy **bên trong** Resolve (bạn bấm 1 lần mỗi khi mở Resolve). Nó mở một cổng chỉ dành cho
   máy của bạn (127.0.0.1, có mã bảo vệ) để nhận lệnh.
-* `server/mcp_server.py` – máy chủ MCP mà Claude kết nối tới (74 công cụ).
+* `server/mcp_server.py` – máy chủ MCP mà Claude kết nối tới (75 công cụ).
 
 > **Lưu ý phiên bản (đã kiểm tra thực tế):** cần **Resolve 21.0.x Free** (đã test 21.0.4.5) hoặc bản Studio.
 > Resolve **21.1 Free trở lên đã bỏ Python** khỏi menu Scripts nên không dùng được. Hãy **tắt** tự động cập nhật
@@ -129,6 +137,12 @@ Bản Resolve **Free** chặn script chạy từ bên ngoài, nhưng vẫn cho c
 * **Vượt giới hạn API**: bánh xe màu/curves/qualifier được tính thành LUT (`color_grade_lut`); keyframe zoom/vị trí/
   xoay/độ mờ qua Fusion (`keyframe_transform`); xử lý âm thanh offline: gain, đường âm lượng, fade, normalize
   (`audio_process`); và `frame_preview` để Claude tự *nhìn* kết quả.
+* **Grade thật trên trang Color, có power window** (`color_grade_drx`): bánh xe màu/saturation/contrast và cửa sổ tròn,
+  tạo file .drx offline bằng bộ codec "advanced" của samuelgursky (Node, MIT, tuỳ chọn), sửa sang định dạng window của
+  Resolve 21, áp dụng rồi đọc lại từ chính file Resolve xuất ra. Cần Node và repo đó nằm cạnh repo này
+  (`..esolve-mcp-advanced`, chạy `npm install` trong `resolve-advanced`) hoặc đặt biến `RESOLVE_MCP_ADVANCED`.
+* **Không tự khởi động**: Resolve 21.0.4 không chạy script trong `Fusion\Scripts\Start` (đã thử), nên sau mỗi lần mở
+  Resolve cần bấm menu để bật bridge.
 * **Trạng thái thật**: `get_full_state` (lưu snapshot) và `diff_state` để thấy chính xác cái gì đã thay đổi.
 * Bảng đầy đủ *làm được / cách thay thế / không thể* nằm trong [COVERAGE.md](COVERAGE.md).
 
@@ -146,7 +160,7 @@ Bản Resolve **Free** chặn script chạy từ bên ngoài, nhưng vẫn cho c
 .venv\Scripts\python.exe tests\run_tests.py
 ```
 Tạo project thử `ClaudeMCP_Test_<giờ>`, tự tạo media, chạy thử từng nhóm công cụ, **không** render, in bảng
-PASS/FAIL (lần chạy gần nhất: **94/94 đạt** trên 21.0.4.5 Free, có kiểm tra điểm ảnh của khung đã grade/keyframe).
+PASS/FAIL (lần chạy gần nhất: **99/99 đạt** trên 21.0.4.5 Free, có kiểm tra điểm ảnh của khung đã grade/keyframe).
 
 ### Sự cố thường gặp
 * *"ClaudeBridge is not running"* → bấm Workspace > Scripts > ClaudeBridge (phải đang mở project).

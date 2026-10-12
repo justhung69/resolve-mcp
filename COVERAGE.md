@@ -113,7 +113,9 @@ in-app Python and this tool stops working (Studio 21.1+ would work, with externa
 | Color groups: add/rename/delete/assign/remove, pre/post-clip graphs | API | verified |
 | Export LUT from grade | API | **quirk**: only writes on the Color page and asynchronously; tool switches page and waits for the file |
 | Primary wheels (lift/gamma/gain/offset), contrast, temperature/tint, curves (master/R/G/B), hue-vs-hue, hue-vs-sat, lum-vs-sat, saturation, soft HSL qualifiers | **Workaround** | `color_grade_lut`: the numeric grade is compiled into a 33-pt 3D LUT and set on a node (read back with GetLUT; graded frame verified by pixels). Global operations only, display-referred, replaces that node's LUT |
-| Power windows, tracking, node creation, node labels (set) | **No** | windows/masks: Fusion comp (`fusion_tool` with Ellipse/Rectangle masks); or grade once in UI → DRX → apply to many clips; or UI fallback |
+| Real Color-page grade: wheels (lift/gamma/gain/offset), saturation, contrast/pivot, **circle power window** (size/pan/tilt/aspect/rotate/soft/opacity) | **Workaround (generated DRX)** | `color_grade_drx`: the .drx is written offline by the samuelgursky advanced codec (Node, MIT), converted to the Resolve-21 window format by `server/drx_r21.py`, applied with `ApplyGradeFromDRX`, then read back from Resolve's own export of the applied grade (grab still → export .drx → decode). Window position/size/dimming verified by pixels in the tests. Replaces the item's node graph (single node); old grade kept as a backup version |
+| Qualifiers (HSL/RGB/luma), HSL curves, custom curves, HDR zones, linear/gradient/polygon windows via generated DRX | **Partial** | written by the codec and accepted by Resolve, but **render not verified on 21.0.4** (only the circle window and the primaries are). Check with `frame_preview` |
+| Tracking, adding nodes to an existing graph, node labels (set) | **No** | windows/masks also possible via Fusion comp (`fusion_tool` Ellipse/Rectangle masks); or UI fallback |
 | Gallery: albums, stills, labels, import/export (dpx/tif/jpg/png/drx…), PowerGrade albums | API | export verified by files written |
 
 ### Fusion
@@ -194,3 +196,19 @@ are now handled (each verified by `tests/run_tests.py`, 97/97 on 21.0.4.5 Free):
 | `GalleryStillAlbum.ExportStills` needs the Gallery panel visible | — | a False result explains it |
 | OTIO `source_range` must use the media's own timecode origin | (our test media starts at 00:00:00:00) | the OTIO builder offsets by each clip's Start TC and reports offline items |
 | `GetSourceStartFrame` can be one frame off; `GetLeftOffset` is exact | — | edit lists use `GetLeftOffset` |
+
+## DRX grades on 21.0.4 (measured 2026-10-12)
+* The advanced codec was calibrated on Resolve 19. On 21.0.4 a power window it writes (corrector type 4, only the
+  non-neutral parameters) loads into the Window palette with correct numbers but **renders an empty mask**: the
+  whole node's grade disappears from the frame. Resolve 21's own export stores the circle/linear transform as
+  corrector type **65540** with the full parameter set (incl. `0x8850000D` = 288.0 and an identity 3×3 at
+  `0x88500010`) and lists 65540 in the node's corrector-type list. `drx_r21.to_r21` rewrites the block into
+  exactly that form → the window renders, matching a window drawn by hand in the UI pixel for pixel.
+* Window **Size** scale: raw = 1 + (UI−50)×0.08 above 50 (codec is right), but below 50 Resolve uses
+  raw ≈ UI/50 (panel: raw 0.2 → 9.92, 0.5 → 24.95). The codec's formula goes negative below 37.5 → Size 0.
+* **Pan/Tilt** raw values are timeline pixels from the frame centre (tilt + = up); the panel shows 50 + raw/4096×50,
+  so one panel unit ≈ 82 px on a 1920×1080 timeline and Pan 65 is already off-frame. `color_grade_drx` accepts
+  `center_x`/`center_y` as frame fractions. A size-50 circle has a radius of ≈ 288 px.
+* Gain wheel: r/g/b are colour **balance** (luma-renormalised): uniform r=g=b with master 1 is a no-op. Brightness
+  rides on `gain.master` (samuelgursky's wire-semantics finding, re-confirmed here by pixels).
+* In `space:"drx"` the codec's saturation default is 50 = 50× saturation; use the default `space:"ui"` (0–100).

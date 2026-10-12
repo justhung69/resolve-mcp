@@ -1,15 +1,15 @@
 {
- "when": "20261012_102053",
- "project": "ClaudeMCP_Test_20261012_102053",
- "passed": 97,
- "total": 97,
+ "when": "20261012_214937",
+ "project": "ClaudeMCP_Test_20261012_214937",
+ "passed": 99,
+ "total": 99,
  "results": [
   {
    "group": "status",
    "test": "bridge running",
    "status": "PASS",
    "detail": "21.0.4.5",
-   "s": 0.11
+   "s": 0.07
   },
   {
    "group": "meta",
@@ -23,147 +23,147 @@
    "test": "catalog search",
    "status": "PASS",
    "detail": "26",
-   "s": 0.01
+   "s": 0.0
   },
   {
    "group": "project",
    "test": "create throwaway project",
    "status": "PASS",
-   "detail": "{'requested': 'ClaudeMCP_Test_20261012_102053', 'actual': 'ClaudeMCP_Test_20261012_102053', 'ok': True, 'listed': True}",
-   "s": 3.52
+   "detail": "{'requested': 'ClaudeMCP_Test_20261012_214937', 'actual': 'ClaudeMCP_Test_20261012_214937', 'ok': True, 'listed': True}",
+   "s": 2.49
   },
   {
    "group": "project",
    "test": "list projects",
    "status": "PASS",
-   "detail": "14",
-   "s": 0.09
+   "detail": "15",
+   "s": 0.04
   },
   {
    "group": "project",
    "test": "settings get",
    "status": "PASS",
    "detail": "24",
-   "s": 0.09
+   "s": 0.05
   },
   {
    "group": "project",
    "test": "settings set (frame rate 24, before timelines)",
    "status": "PASS",
    "detail": "24",
-   "s": 0.09
+   "s": 0.04
   },
   {
    "group": "project",
    "test": "open page media (verified)",
    "status": "PASS",
    "detail": "media",
-   "s": 0.14
+   "s": 0.13
   },
   {
    "group": "media",
    "test": "import 2 image sequences + wav",
    "status": "PASS",
    "detail": "['clipA_[0000-0047].png', 'clipB_[0000-0047].png', 'tone.wav']",
-   "s": 0.51
+   "s": 0.34
   },
   {
    "group": "media",
    "test": "create bin + move clip (verified in tree)",
    "status": "PASS",
    "detail": "moved wav into Audio Bin",
-   "s": 0.5
+   "s": 0.3
   },
   {
    "group": "media",
    "test": "clip update: color/metadata/flag/mark in-out",
    "status": "PASS",
    "detail": "[('SetClipColor', 'Orange'), ('SetMetadata', 'from Claude'), ('AddFlag', ['Green']), ('SetMarkInOut', {'video': {'in': 5, 'out': 30}})]",
-   "s": 0.1
+   "s": 0.08
   },
   {
    "group": "media",
    "test": "clip marker add (verified)",
    "status": "PASS",
    "detail": "{'color': 'Red', 'duration': 1, 'note': 'n', 'name': 'clip mk', 'customData': ''}",
-   "s": 0.03
+   "s": 0.02
   },
   {
    "group": "media",
    "test": "clip inspect",
    "status": "PASS",
    "detail": "48",
-   "s": 0.08
+   "s": 0.03
   },
   {
    "group": "media",
    "test": "clear mark in/out",
    "status": "PASS",
-   "detail": "{'target': 'MediaPoolItem:7b5b99fc-da42-48a1-92fc-ee647cce4d0a', 'method': 'ClearMarkInOut', 'args': ['all'], 'notes': [], 'result': True, 'ok': True, 'verified': None}",
-   "s": 0.01
+   "detail": "{'target': 'MediaPoolItem:cb6c9fe4-57ae-43c3-96c0-67c5cfd18991', 'method': 'ClearMarkInOut', 'args': ['all'], 'notes': [], 'result': True, 'ok': True, 'verified': None}",
+   "s": 0.0
   },
   {
    "group": "timeline",
    "test": "create from clips (verified item count)",
    "status": "PASS",
    "detail": "2",
-   "s": 0.61
+   "s": 0.34
   },
   {
    "group": "timeline",
    "test": "list timelines",
    "status": "PASS",
    "detail": "1",
-   "s": 0.03
+   "s": 0.01
   },
   {
    "group": "timeline",
    "test": "inspect items (positions contiguous)",
    "status": "PASS",
    "detail": "[('clipA_[0000-0047].png', 86400, 48), ('clipB_[0000-0047].png', 86448, 48)]",
-   "s": 0.17
+   "s": 0.05
   },
   {
    "group": "timeline",
    "test": "add video track (verified count)",
    "status": "PASS",
    "detail": "2",
-   "s": 0.13
+   "s": 0.06
   },
   {
    "group": "timeline",
    "test": "rename track (verified)",
    "status": "PASS",
    "detail": "Overlay",
-   "s": 0.09
+   "s": 0.03
   },
   {
    "group": "timeline",
    "test": "lock + unlock track",
    "status": "PASS",
    "detail": "[True, False]",
-   "s": 0.21
+   "s": 0.07
   },
   {
    "group": "timeline",
    "test": "disable + enable track",
    "status": "PASS",
    "detail": "[False, True]",
-   "s": 0.19
+   "s": 0.06
   },
   {
    "group": "timeline",
    "test": "append subclip to V2 at frame (read back)",
    "status": "PASS",
-   "detail": "[{'item': 'TimelineItem:268cc417-642a-4352-a0e7-4e377a2e59a2', 'requested': {'clip': 'MediaPoolItem:7b5b99fc-da42-48a1-92fc-ee647cce4d0a', 'start_frame': 0, 'end_frame': 24, 'track': 2, 'record_frame': 86410, 'media_type': 1}, 'actual': {'start': 86410, 'duration': 24, 'track': ['video', 2]}, 'ok': True}]",
-   "s": 0.38
+   "detail": "[{'item': 'TimelineItem:e3b56608-044d-4e50-8dd7-9dabb2b4b80e', 'requested': {'clip': 'MediaPoolItem:cb6c9fe4-57ae-43c3-96c0-67c5cfd18991', 'start_frame': 0, 'end_frame': 24, 'track': 2, 'record_frame': 86410, 'media_type': 1}, 'actual': {'start': 86410, 'duration': 24, 'track': ['video', 2]}, 'ok': True}]",
+   "s": 0.21
   },
   {
    "group": "timeline",
    "test": "timeline marker add (verified)",
    "status": "PASS",
    "detail": "{'color': 'Blue', 'duration': 1, 'note': 'hi', 'name': 'TL mk', 'customData': 'cd1'}",
-   "s": 0.02
+   "s": 0.01
   },
   {
    "group": "timeline",
@@ -177,70 +177,70 @@
    "test": "open media page",
    "status": "PASS",
    "detail": "media",
-   "s": 0.21
+   "s": 0.14
   },
   {
    "group": "timeline",
    "test": "playhead refused on Media page (honest error)",
    "status": "PASS",
    "detail": "refused",
-   "s": 0.06
+   "s": 0.03
   },
   {
    "group": "timeline",
    "test": "open edit page",
    "status": "PASS",
    "detail": "edit",
-   "s": 0.21
+   "s": 0.1
   },
   {
    "group": "timeline",
    "test": "playhead set (verified)",
    "status": "PASS",
    "detail": "01:00:01:00",
-   "s": 0.13
+   "s": 0.07
   },
   {
    "group": "timeline",
    "test": "start timecode set (verified)",
    "status": "PASS",
    "detail": "01:00:00:00",
-   "s": 0.66
+   "s": 0.14
   },
   {
    "group": "item",
    "test": "set 8 inspector properties (each read back)",
    "status": "PASS",
    "detail": "[('ZoomX', 1.25), ('ZoomY', 1.25), ('Pan', 50), ('Tilt', -20), ('Opacity', 75), ('RotationAngle', 10), ('FlipX', True), ('CropLeft', 12)]",
-   "s": 0.41
+   "s": 0.14
   },
   {
    "group": "item",
    "test": "set composite mode via constant",
    "status": "PASS",
    "detail": "5",
-   "s": 0.04
+   "s": 0.02
   },
   {
    "group": "item",
    "test": "out-of-range value detected (Opacity 150)",
    "status": "PASS",
-   "detail": "{'item': 'TimelineItem:268cc417-642a-4352-a0e7-4e377a2e59a2', 'key': 'Opacity', 'requested': 150.0, 'actual': 100, 'ok': False, 'notes': ['Resolve reported success but the read-back value differs - the change did not (fully) take effect.']}",
-   "s": 0.04
+   "detail": "{'item': 'TimelineItem:e3b56608-044d-4e50-8dd7-9dabb2b4b80e', 'key': 'Opacity', 'requested': 150.0, 'actual': 100, 'ok': False, 'notes': ['Resolve reported success but the read-back value differs - the change did not (fully) take effect.']}",
+   "s": 0.02
   },
   {
    "group": "item",
    "test": "rename/color/disable/enable/flag",
    "status": "PASS",
    "detail": "[('SetName', 'Blue shot'), ('SetClipColor', 'Teal'), ('SetClipEnabled', False), ('AddFlag', ['Red'])]",
-   "s": 0.16
+   "s": 0.11
   },
   {
    "group": "item",
    "test": "re-enable item",
    "status": "PASS",
    "detail": "True",
-   "s": 0.09
+   "s": 0.07
   },
   {
    "group": "item",
@@ -254,119 +254,133 @@
    "test": "inspect item",
    "status": "PASS",
    "detail": "{'ZoomX': 1.25, 'Pan': 50, 'Opacity': 75}",
-   "s": 0.18
+   "s": 0.2
   },
   {
    "group": "color",
    "test": "open color page",
    "status": "PASS",
    "detail": "color",
-   "s": 0.28
+   "s": 0.2
   },
   {
    "group": "color",
    "test": "node graph read",
    "status": "PASS",
-   "detail": "{'graph': 'Graph@0x000002904037C5E0', 'num_nodes': 1, 'nodes': [{'index': 1, 'label': '', 'lut': '', 'tools': None, 'cache_mode': -1}]}",
-   "s": 0.03
+   "detail": "{'graph': 'Graph@0x000002905CC1D000', 'num_nodes': 1, 'nodes': [{'index': 1, 'label': '', 'lut': '', 'tools': None, 'cache_mode': -1}]}",
+   "s": 0.02
   },
   {
    "group": "color",
    "test": "LUT refresh",
    "status": "PASS",
    "detail": "True",
-   "s": 0.28
+   "s": 0.1
   },
   {
    "group": "color",
    "test": "set LUT on node 1 (verified by GetLUT)",
    "status": "PASS",
    "detail": "[('C:\\\\ProgramData\\\\Blackmagic Design\\\\DaVinci Resolve\\\\Support\\\\LUT\\\\ClaudeMCP\\\\claude_warm.cube', 'ClaudeMCP\\\\claude_warm.cube')]",
-   "s": 0.02
+   "s": 0.01
   },
   {
    "group": "color",
    "test": "apply CDL (call accepted; no getter)",
    "status": "PASS",
    "detail": "No CDL getter exists in the API - CDL cannot be read back; c",
-   "s": 0.03
+   "s": 0.01
   },
   {
    "group": "color",
    "test": "add + load color version",
    "status": "PASS",
    "detail": "[['Version 1', 'Claude v2'], {'versionName': 'Claude v2', 'versionType': 0}]",
-   "s": 0.07
+   "s": 0.06
   },
   {
    "group": "color",
    "test": "load back Version 1",
    "status": "PASS",
    "detail": "{'versionName': 'Version 1', 'versionType': 0}",
-   "s": 0.02
+   "s": 0.01
   },
   {
    "group": "color",
    "test": "color group add + assign (verified)",
    "status": "PASS",
    "detail": "['Claude Group', 'Claude Group']",
-   "s": 0.25
+   "s": 0.12
   },
   {
    "group": "color",
    "test": "copy grade to 2nd item, old grade kept as backup version",
    "status": "PASS",
-   "detail": "{'comparison': [{'target': 'TimelineItem:78b6f162-4e3b-4c9f-bbde-31758ddb3e82', 'matches_source': True}], 'backup': 'Claude backup 20261012-102104', 'versions': ['Version 1', 'Claude backup 20261012-102104']}",
-   "s": 0.17
+   "detail": "{'comparison': [{'target': 'TimelineItem:89335581-2765-4b0c-9299-186991f0980e', 'matches_source': True}], 'backup': 'Claude backup 20261012-214943', 'versions': ['Version 1', 'Claude backup 20261012-214943']}",
+   "s": 0.04
   },
   {
    "group": "color",
    "test": "export LUT from grade",
    "status": "PASS",
-   "detail": "C:\\Users\\ASUS\\AppData\\Local\\ResolveMCP\\test_run_20261012_102053\\exported_grade.cube",
-   "s": 0.04
+   "detail": "C:\\Users\\ASUS\\AppData\\Local\\ResolveMCP\\test_run_20261012_214937\\exported_grade.cube",
+   "s": 0.03
   },
   {
    "group": "color",
    "test": "Studio-only tool refused on Free (no blocking dialog)",
    "status": "PASS",
    "detail": "refused before calling Resolve",
-   "s": 0.01
+   "s": 0.02
   },
   {
    "group": "gallery",
    "test": "grab still + list albums",
    "status": "PASS",
-   "detail": "[{'h': 'GalleryStillAlbum@0x0000028FC406D900', 'kind': 'still', 'name': 'Stills 1', 'stills': 1}, {'h': 'GalleryStillAlbum@0x0000028FC3F7B300', 'kind': 'powergrade', 'name': 'PowerGrade 1', 'stills': 0}]",
-   "s": 0.38
+   "detail": "[{'h': 'GalleryStillAlbum@0x0000028FC406D4C0', 'kind': 'still', 'name': 'Stills 1', 'stills': 1}, {'h': 'GalleryStillAlbum@0x0000028FC3F7B300', 'kind': 'powergrade', 'name': 'PowerGrade 1', 'stills': 0}]",
+   "s": 0.17
   },
   {
    "group": "gallery",
    "test": "label still (verified)",
    "status": "PASS",
    "detail": "Claude still",
-   "s": 0.07
+   "s": 0.04
   },
   {
    "group": "gallery",
    "test": "export still as DRX (files written)",
    "status": "PASS",
    "detail": "['still_2.1.1.drx']",
-   "s": 0.1
+   "s": 0.04
   },
   {
    "group": "color",
    "test": "apply DRX grade to another item",
    "status": "PASS",
    "detail": "True",
-   "s": 0.21
+   "s": 0.03
+  },
+  {
+   "group": "color",
+   "test": "DRX window written in Resolve-21 form (offline, size 30 exact)",
+   "status": "PASS",
+   "detail": "[{'corrector_type': 65540, 'rotate': -0.0, 'aspect': 50.0, 'soft1': 0.0, 'size': 30.0, 'pan': 50.0, 'tilt': 50.0}]",
+   "s": 0.37
+  },
+  {
+   "group": "color",
+   "test": "generated DRX: window renders where requested, outside untouched (pixels)",
+   "status": "PASS",
+   "detail": "{'readback_ok': True, 'inside_ratio': 0.425, 'outside_ratio': 1.0, 'dark_centre': (0.3, 0.348), 'backups': [{'item': 'TimelineItem:d9af2c8f-660f-4646-8b55-a118ab386a48', 'backup_version': 'Claude backup 20261012-214945'}]}",
+   "s": 13.58
   },
   {
    "group": "fusion",
    "test": "open edit page",
    "status": "PASS",
    "detail": "edit",
-   "s": 0.2
+   "s": 0.12
   },
   {
    "group": "fusion",
@@ -380,21 +394,21 @@
    "test": "add Blur tool + set input (read back)",
    "status": "PASS",
    "detail": "[{'TOOLS_Name': 'Blur1', 'TOOLS_RegID': 'Blur'}, 40]",
-   "s": 0.05
+   "s": 0.03
   },
   {
    "group": "fusion",
    "test": "Blur wired in + committed changes the rendered frame (pixels)",
    "status": "PASS",
    "detail": "{'edge_energy_before': 0.000432, 'edge_energy_after': 0.000273}",
-   "s": 8.21
+   "s": 5.41
   },
   {
    "group": "fusion",
    "test": "inspect comp tools",
    "status": "PASS",
    "detail": "['MediaIn1', 'MediaOut1', 'Blur1']",
-   "s": 0.02
+   "s": 0.01
   },
   {
    "group": "fusion",
@@ -408,112 +422,112 @@
    "test": "rename comp (verified)",
    "status": "PASS",
    "detail": "['Claude Comp']",
-   "s": 0.02
+   "s": 0.01
   },
   {
    "group": "interchange",
    "test": "export edl",
    "status": "PASS",
    "detail": "True",
-   "s": 0.07
+   "s": 0.03
   },
   {
    "group": "interchange",
    "test": "export fcpxml",
    "status": "PASS",
    "detail": "True",
-   "s": 0.08
+   "s": 0.05
   },
   {
    "group": "interchange",
    "test": "export otio",
    "status": "PASS",
    "detail": "True",
-   "s": 0.1
+   "s": 0.04
   },
   {
    "group": "interchange",
    "test": "export drt",
    "status": "PASS",
    "detail": "True",
-   "s": 0.25
+   "s": 0.3
   },
   {
    "group": "interchange",
    "test": "export csv",
    "status": "PASS",
    "detail": "True",
-   "s": 0.09
+   "s": 0.03
   },
   {
    "group": "interchange",
    "test": "export fcp7xml",
    "status": "PASS",
    "detail": "True",
-   "s": 0.08
+   "s": 0.04
   },
   {
    "group": "interchange",
    "test": "import FCPXML as new timeline",
    "status": "PASS",
    "detail": "{'name': 'Reimported FCPXML', 'start': 86400, 'end': 86496}",
-   "s": 1.08
+   "s": 0.51
   },
   {
    "group": "interchange",
    "test": "import OTIO as new timeline",
    "status": "PASS",
    "detail": "{'name': 'Reimported OTIO', 'start': 86400, 'end': 86496}",
-   "s": 1.35
+   "s": 0.46
   },
   {
    "group": "workaround",
    "test": "timeline_set_current back to Test TL",
    "status": "PASS",
-   "detail": "{'$h': 'Timeline:3102d591-ce97-4ea2-a02e-3875de160997', 'type': 'Timeline'}",
-   "s": 0.74
+   "detail": "{'$h': 'Timeline:b8749cd9-b41d-49c6-9534-acb51b2f7812', 'type': 'Timeline'}",
+   "s": 0.33
   },
   {
    "group": "workaround",
    "test": "razor at frame 30 -> new timeline (verified)",
    "status": "PASS",
    "detail": "{'splits': 2, 'placed': 5, 'notes': [], 'not_rebuilt': 0}",
-   "s": 2.72
+   "s": 1.26
   },
   {
    "group": "workaround",
    "test": "razor kept transform properties",
    "status": "PASS",
    "detail": "{'ZoomX': 1.25, 'color': 'Orange'}",
-   "s": 0.4
+   "s": 0.15
   },
   {
    "group": "workaround",
    "test": "OTIO build: dissolve + 200% speed + marker",
    "status": "PASS",
    "detail": "['clipA_[0000-0047].png', 'Cross Dissolve', 'clipB_[0000-0047].png', 'clipB_[0000-0047].png']",
-   "s": 1.5
+   "s": 0.59
   },
   {
    "group": "workaround",
    "test": "edit list: ripple trim + slip -> new timeline",
    "status": "PASS",
    "detail": "[(0, 40), (40, 42)]",
-   "s": 1.71
+   "s": 0.81
   },
   {
    "group": "beyond-api",
    "test": "frame preview before grade",
    "status": "PASS",
-   "detail": "C:\\Users\\ASUS\\AppData\\Local\\ResolveMCP\\test_run_20261012_102053\\previews\\it2_before.png",
-   "s": 0.94
+   "detail": "C:\\Users\\ASUS\\AppData\\Local\\ResolveMCP\\test_run_20261012_214937\\previews\\it2_before.png",
+   "s": 0.41
   },
   {
    "group": "beyond-api",
    "test": "color_grade_lut: wheels+curves+qualifier on node 1 (GetLUT)",
    "status": "PASS",
    "detail": "{'lut': 'test_look.cube', 'actual': 'ClaudeMCP\\\\test_look.cube', 'sky': {'in': [0.35, 0.55, 0.85], 'out': [0.1807, 0.8012, 1.0]}}",
-   "s": 2.48
+   "s": 1.17
   },
   {
    "group": "beyond-api",
@@ -527,126 +541,126 @@
    "test": "color_grade_lut refuses missing node honestly",
    "status": "PASS",
    "detail": "node 5 does not exist (clip has 1 nodes; the API cannot add nodes)",
-   "s": 0.93
+   "s": 0.48
   },
   {
    "group": "beyond-api",
    "test": "keyframe_transform: zoom/pan/tilt/rot/opacity (read back + previews)",
    "status": "PASS",
    "detail": "{'checks_ok': 15, 'mid@12': {'zoom': 1.25, 'rotation': 6.0, 'pan': 30.0, 'tilt': 15.0, 'anchor_x': 0.0, 'anchor_y': 0.0, 'opacity': 70.0}}",
-   "s": 3.93
+   "s": 1.54
   },
   {
    "group": "beyond-api",
    "test": "keyframes visible in the rendered frame (pixels, opacity 40%)",
    "status": "PASS",
    "detail": "{'mean_before': 0.356, 'mean_key24': 0.142, 'ratio': 0.399}",
-   "s": 6.99
+   "s": 4.05
   },
   {
    "group": "beyond-api",
    "test": "keyframe_transform re-run is idempotent",
    "status": "PASS",
    "detail": "1.7",
-   "s": 0.21
+   "s": 0.09
   },
   {
    "group": "beyond-api",
    "test": "audio_process: envelope+fades+normalize, import (measured)",
    "status": "PASS",
    "detail": "{'after': {'peak_dbfs': -3.0, 'rms_dbfs': -8.88}, 'env': [{'t': 0.4, 'requested_db': 5.73, 'measured_db': 5.61}, {'t': 1.0, 'requested_db': -6.27, 'measured_db': -6.02}, {'t': 1.6, 'requested_db': 5.73, 'measured_db': 5.61}]}",
-   "s": 0.76
+   "s": 0.42
   },
   {
    "group": "beyond-api",
    "test": "audio_process replace refused without confirm",
    "status": "PASS",
    "detail": "refused",
-   "s": 0.29
+   "s": 0.16
   },
   {
    "group": "beyond-api",
    "test": "audio_process replace with confirm (file swapped, backup)",
    "status": "PASS",
    "detail": "tone_claude1_claude2.wav",
-   "s": 1.6
+   "s": 0.81
   },
   {
    "group": "render",
    "test": "add render job (not started), settings read back",
    "status": "PASS",
-   "detail": "[('TargetDir', 'C:\\\\Users\\\\ASUS\\\\AppData\\\\Local\\\\ResolveMCP\\\\test_run_20261012_102053\\\\render', True), ('CustomName', 'claude_test.mp4', True), ('FormatWidth', 1280, True), ('FormatHeight', 720, True), ('format/codec', ['MP4', 'H.264'], None)]",
-   "s": 3.61
+   "detail": "[('TargetDir', 'C:\\\\Users\\\\ASUS\\\\AppData\\\\Local\\\\ResolveMCP\\\\test_run_20261012_214937\\\\render', True), ('CustomName', 'claude_test.mp4', True), ('FormatWidth', 1280, True), ('FormatHeight', 720, True), ('format/codec', ['MP4', 'H.264'], None)]",
+   "s": 1.58
   },
   {
    "group": "render",
    "test": "render tools put the user back on their page",
    "status": "PASS",
    "detail": "edit",
-   "s": 1.11
+   "s": 0.46
   },
   {
    "group": "render",
    "test": "render queue status",
    "status": "PASS",
    "detail": "[{'JobStatus': 'Ready', 'CompletionPercentage': 0}]",
-   "s": 0.07
+   "s": 0.05
   },
   {
    "group": "render",
    "test": "start render refused without confirm",
    "status": "PASS",
    "detail": "refused",
-   "s": 0.06
+   "s": 0.03
   },
   {
    "group": "render",
    "test": "delete job with confirm (backup made)",
    "status": "PASS",
-   "detail": "['C:\\\\Users\\\\ASUS\\\\AppData\\\\Local\\\\ResolveMCP\\\\backups\\\\ClaudeMCP_Test_20261012_102053_20261012-102148.drp']",
-   "s": 0.77
+   "detail": "['C:\\\\Users\\\\ASUS\\\\AppData\\\\Local\\\\ResolveMCP\\\\backups\\\\ClaudeMCP_Test_20261012_214937_20261012-215020.drp']",
+   "s": 0.35
   },
   {
    "group": "state",
    "test": "full state snapshot + diff detects edits",
    "status": "PASS",
-   "detail": "{'changes': 2, 'sample': ['/timelines[h=Timeline:3102d591-ce97-4ea2-a02e-3875de160997]/markers/40', '/timelines[h=Timeline:3102d591-ce97-4ea2-a02e-3875de160997]/tracks/video[index=1]/items[h=TimelineItem:78b6f162-4e3b-4c9f-bbde-31758ddb3e82]/properties/Opacity']}",
-   "s": 3.14
+   "detail": "{'changes': 2, 'sample': ['/timelines[h=Timeline:b8749cd9-b41d-49c6-9534-acb51b2f7812]/markers/40', '/timelines[h=Timeline:b8749cd9-b41d-49c6-9534-acb51b2f7812]/tracks/video[index=1]/items[h=TimelineItem:89335581-2765-4b0c-9299-186991f0980e]/properties/Opacity']}",
+   "s": 1.11
   },
   {
    "group": "state",
    "test": "snapshot does not move the user's page (GetCurrentRenderMode side effect)",
    "status": "PASS",
    "detail": "edit",
-   "s": 0.88
+   "s": 0.41
   },
   {
    "group": "timeline",
    "test": "duplicate keeps the current timeline",
    "status": "PASS",
    "detail": "{'current': 'Test TL', 'restored': 'Test TL'}",
-   "s": 1.54
+   "s": 0.69
   },
   {
    "group": "state",
    "test": "state paging (item_limit=1)",
    "status": "PASS",
-   "detail": "20261012-102154-6b7d26",
-   "s": 0.1
+   "detail": "20261012-215022-04b115",
+   "s": 0.05
   },
   {
    "group": "safety",
    "test": "destructive call refused without confirm",
    "status": "PASS",
    "detail": "refused",
-   "s": 0.21
+   "s": 0.1
   },
   {
    "group": "safety",
    "test": "dry run shows plan, changes nothing",
    "status": "PASS",
-   "detail": "MediaPool.DeleteTimelines([{\"$h\": \"Timeline:3102d591-ce97-4ea2-a02e-3875de160997\"}])",
-   "s": 0.07
+   "detail": "MediaPool.DeleteTimelines([{\"$h\": \"Timeline:b8749cd9-b41d-49c6-9534-acb51b2f7812\"}])",
+   "s": 0.03
   },
   {
    "group": "safety",
@@ -659,29 +673,29 @@
    "group": "safety",
    "test": "confirmed delete makes .drp backup first",
    "status": "PASS",
-   "detail": "['C:\\\\Users\\\\ASUS\\\\AppData\\\\Local\\\\ResolveMCP\\\\backups\\\\ClaudeMCP_Test_20261012_102053_20261012-102154.drp']",
-   "s": 1.02
+   "detail": "['C:\\\\Users\\\\ASUS\\\\AppData\\\\Local\\\\ResolveMCP\\\\backups\\\\ClaudeMCP_Test_20261012_214937_20261012-215022.drp']",
+   "s": 0.54
   },
   {
    "group": "meta",
    "test": "live methods vs README",
    "status": "PASS",
    "detail": "{'undocumented': [], 'missing': []}",
-   "s": 0.13
+   "s": 0.07
   },
   {
    "group": "meta",
    "test": "operation log written",
    "status": "PASS",
    "detail": "200",
-   "s": 0.03
+   "s": 0.02
   },
   {
    "group": "project",
    "test": "save project",
    "status": "PASS",
    "detail": "True",
-   "s": 0.19
+   "s": 0.11
   }
  ]
 }

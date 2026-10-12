@@ -226,6 +226,34 @@ def main():
         return r["ok"], r["results"][0].get("result")
     check("color", "apply DRX grade to another item", drx)
 
+    # --- generated DRX grade (advanced codec + Resolve-21 window fix), checked by readback AND pixels
+    def drx_offline():
+        sys.path.insert(0, os.path.join(ROOT, "server"))
+        import drx_r21
+        r = t("color_grade_drx", items=[], dry_run=True, grade={"gain": {"master": 0.5}, "window": {
+            "type": 1, "size": 30, "center_x": 0.5, "center_y": 0.5}})
+        w = r["requested"]["windows"]
+        return r["ok"] and w and w[0]["corrector_type"] == drx_r21.CT_WINDOW_R21 and abs(w[0]["size"] - 30) < 0.05, w
+    check("color", "DRX window written in Resolve-21 form (offline, size 30 exact)", drx_offline)
+
+    def drx_window_pixels():
+        r = t("timeline_create", name="DRX grade TL", clips=[CTX["clipA"]])
+        it = t("timeline_inspect", timeline="DRX grade TL")["tracks"]["video"][0]["items"][0]["h"]
+        b = t("frame_preview", path=os.path.join(WORK, "drx_before.png"), item=it)["file"]
+        g = t("color_grade_drx", items=[it], grade={"gain": {"r": 1, "g": 1, "b": 1, "master": 0.3},
+              "window": {"type": 1, "size": 20, "center_x": 0.3, "center_y": 0.35, "soft1": 0}})
+        a = t("frame_preview", path=os.path.join(WORK, "drx_after.png"), item=it)["file"]
+        t("timeline_set_current", timeline="Test TL")
+        inside = pngstat.region_mean(a, 0.29, 0.34, 0.31, 0.36) / pngstat.region_mean(b, 0.29, 0.34, 0.31, 0.36)
+        outside = pngstat.region_mean(a, 0.75, 0.70, 0.80, 0.80) / pngstat.region_mean(b, 0.75, 0.70, 0.80, 0.80)
+        box = pngstat.dark_bbox(a, 0.6 * pngstat.region_mean(b, 0.75, 0.70, 0.80, 0.80))
+        cx, cy = ((box["bbox"][0] + box["bbox"][2]) / 2, (box["bbox"][1] + box["bbox"][3]) / 2) if box else (None, None)
+        ok = (g["ok"] and inside < 0.6 and 0.97 < outside < 1.03 and box
+              and abs(cx - 0.3) < 0.03 and abs(cy - 0.35) < 0.04)
+        return ok, {"readback_ok": g["ok"], "inside_ratio": round(inside, 3), "outside_ratio": round(outside, 3),
+                    "dark_centre": (cx and round(cx, 3), cy and round(cy, 3)), "backups": g.get("backups")}
+    check("color", "generated DRX: window renders where requested, outside untouched (pixels)", drx_window_pixels)
+
     # --- fusion
     check("fusion", "open edit page", lambda: (lambda r: (r["ok"], r.get("actual")))(t("open_page", page="edit")))
 

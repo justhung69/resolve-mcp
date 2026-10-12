@@ -1531,6 +1531,138 @@ def timeline_build_otio(pieces: list, name: str, transitions: list | None = None
 # ======================================================================= beyond the API: grading LUTs,
 # keyframes through Fusion, offline audio, frame previews
 
+# ===================================================================== DRX grades (advanced codec)
+
+import subprocess  # noqa: E402
+import tempfile  # noqa: E402
+import drx_r21  # noqa: E402
+
+ADV_REPO = os.environ.get("RESOLVE_MCP_ADVANCED") or os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "resolve-mcp-advanced")
+DRX_HELPER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "drx_gen.mjs")
+DRX_DIR = os.path.join(core.STATE_DIR, "drx")
+PRIMARY_KEYS = ("lift", "gamma", "gain", "offset", "saturation", "contrast", "pivot")
+
+
+def _drx_codec(action, path, params=None):
+    if not os.path.isfile(os.path.join(ADV_REPO, "resolve-advanced", "server", "tools", "drx.mjs")):
+        raise core.BridgeError("advanced DRX codec not found at %s (clone samuelgursky/davinci-resolve-mcp there and "
+                               "run npm install in resolve-advanced, or set RESOLVE_MCP_ADVANCED)" % ADV_REPO)
+    cmd = ["node", DRX_HELPER, ADV_REPO, action, path] + ([json.dumps(params)] if params is not None else [])
+    r = subprocess.run(cmd, capture_output=True, text=True, timeout=120, encoding="utf-8")
+    if r.returncode:
+        raise core.BridgeError("DRX codec failed: %s" % (r.stderr.strip().splitlines() or ["?"])[-1])
+    return json.loads(r.stdout)
+
+
+def _primaries(parsed):
+    n = (parsed.get("nodes") or [{}])[0].get("params") or {}
+    return {k: n.get(k) for k in PRIMARY_KEYS if k in n}
+
+
+def _close(a, b, tol=2e-3):
+    if isinstance(a, dict) and isinstance(b, dict):
+        return all(_close(a.get(k), b.get(k), tol) for k in set(a) | set(b))
+    if isinstance(a, (int, float)) and isinstance(b, (int, float)):
+        return abs(a - b) <= tol * max(1.0, abs(a), abs(b))
+    return a == b
+
+
+def _grade_readback(item):
+    """Grab a still of `item` (playhead moved to its first frame), export it as .drx, delete that temporary still.
+    Returns the exported path. This is Resolve's own serialization of the grade it is actually using."""
+    tl = core.roots()["timeline"]
+    fps = core.get(tl, "GetSetting", "timelineFrameRate")
+    core.get(tl, "SetCurrentTimecode", tc_from_frames(core.get(H(item), "GetStart"), fps))
+    still = core.get(tl, "GrabStill")
+    if not still:
+        raise core.BridgeError("GrabStill failed - is the item on the current timeline?")
+    album = core.get(core.roots()["gallery"], "GetCurrentStillAlbum")
+    folder = tempfile.mkdtemp(prefix="drx_readback_", dir=DRX_DIR)
+    try:
+        ok = core.get(album, "ExportStills", [still], folder, "readback", "drx")
+        files = [f for f in os.listdir(folder) if f.endswith(".drx")]
+        if not ok or not files:
+            raise core.BridgeError("ExportStills wrote no .drx (open the Gallery panel on the Color page)")
+        return os.path.join(folder, files[0])
+    finally:
+        core.get(album, "DeleteStills", [still])  # the temporary still this function created
+
+
+@server.tool(annotations=RW)
+@page_guard("color")
+def color_grade_drx(items: list, grade: dict, verify: bool = True, backup_versions: bool = True,
+                    dry_run: bool = False) -> dict:
+    """Real Color-page grade (single serial node, replaces the item's node graph) built offline as a .drx with
+    the samuelgursky advanced codec, made Resolve-21 compatible, applied with ApplyGradeFromDRX and read back
+    from Resolve's own export of the result.
+    grade (panel/UI numbers): lift/gamma/offset/gain {r,g,b,master}; NOTE gain r/g/b are colour BALANCE only -
+    brightness rides on gain.master; saturation 0-100 (50 neutral); contrast, pivot;
+    window {type 1 circle | 2 linear, size, aspect, pan, tilt, rotate, soft1, opacity} (panel numbers; pan/tilt
+    panel units are ~82 timeline px each - prefer center_x/center_y = frame fractions 0..1, y down; a size-50
+    circle has a radius of ~288 px);
+    qualifier {hueCenter, hueWidth, hueSoft, satLow, satHigh, lumLow, lumHigh}; rgbQualifier; lumaQualifier;
+    hslCurves; customCurves; hdr zones (see the codec docs). Gradient/polygon windows: written as-is, render
+    not verified on 21.0.4.
+    backup_versions keeps each item's previous grade as a 'Claude backup <time>' version first."""
+    os.makedirs(DRX_DIR, exist_ok=True)
+    g = json.loads(json.dumps(grade))
+    g.setdefault("space", "ui")
+    win = g.get("window")
+    size_ui = None
+    if isinstance(win, dict) and ("center_x" in win or "center_y" in win):
+        # Measured on 21.0.4 (1920x1080 timeline): pan/tilt raw = timeline pixels from frame centre, tilt + = up;
+        # panel number = 50 + raw / 4096 * 50, so one panel unit is ~82 px and pan 65 is already off-frame.
+        tl = core.roots()["timeline"]
+        tw = float(core.get(tl, "GetSetting", "timelineResolutionWidth") or 1920)
+        th = float(core.get(tl, "GetSetting", "timelineResolutionHeight") or 1080)
+        win["pan"] = 50 + (float(win.pop("center_x", 0.5)) - 0.5) * tw / 4096 * 50
+        win["tilt"] = 50 + (0.5 - float(win.pop("center_y", 0.5))) * th / 4096 * 50
+    if isinstance(win, dict) and win.get("type") in (1, 2) and "size" in win:
+        size_ui = float(win["size"])
+        win["size"] = 50  # the codec's size scale is wrong below 50 on 21.0.4 - written exactly below
+    stamp = time.strftime("%Y%m%d-%H%M%S")
+    src = os.path.join(DRX_DIR, "gen_%s.drx" % stamp)
+    _drx_codec("generate", src, g)
+    path = os.path.join(DRX_DIR, "claude_grade_%s.drx" % stamp)
+    overrides = {drx_r21.SIZE: drx_r21.size_to_raw(size_ui)} if size_ui is not None else None
+    changed = drx_r21.to_r21(src, path, overrides)
+    requested = {"primaries": _primaries(_drx_codec("parse", path)), "windows": drx_r21.read_windows(path)}
+    res = {"drx": path, "window_blocks_converted": changed, "requested": requested, "notes": []}
+    if dry_run:
+        res.update(ok=True, dry_run=True)
+        return res
+    backups, results = [], []
+    for it in items:
+        if backup_versions:
+            cur = core.get(H(it), "GetCurrentVersion") or {}
+            bname = "Claude backup %s" % stamp
+            if not core.get(H(it), "AddVersion", bname, 0):
+                raise core.BridgeError("could not create a backup version on %s - nothing applied" % it)
+            core.get(H(it), "LoadVersionByName", cur.get("versionName"), cur.get("versionType", 0))
+            backups.append({"item": it, "backup_version": bname})
+        graph = _graph(it)
+        r = core.call(graph, "ApplyGradeFromDRX", [path, 0], tool="color_grade_drx")
+        entry = {"item": it, "applied": bool(r.get("result"))}
+        if verify and entry["applied"]:
+            back = _grade_readback(it)
+            actual = {"primaries": _primaries(_drx_codec("parse", back)), "windows": drx_r21.read_windows(back)}
+            wins_ok = len(actual["windows"]) == len(requested["windows"]) and all(
+                _close({k: v for k, v in a.items() if k != "corrector_type"},
+                       {k: v for k, v in b.items() if k != "corrector_type"}, 0.02)
+                for a, b in zip(actual["windows"], requested["windows"]))
+            entry.update(actual=actual, primaries_match=_close(actual["primaries"], requested["primaries"]),
+                         windows_match=wins_ok)
+            entry["ok"] = entry["primaries_match"] and wins_ok
+        else:
+            entry["ok"] = entry["applied"]
+        results.append(entry)
+    res.update(results=results, backups=backups, ok=all(r["ok"] for r in results))
+    res["notes"].append("Readback = Resolve's own .drx export of the applied grade. Pixels are not checked here - "
+                        "use frame_preview to look at the result.")
+    return res
+
+
 LUT_DIR = os.path.join(os.environ.get("PROGRAMDATA", r"C:\ProgramData"),
                        r"Blackmagic Design\DaVinci Resolve\Support\LUT\ClaudeMCP")
 
