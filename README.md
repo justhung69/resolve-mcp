@@ -1,5 +1,14 @@
 # DaVinci Resolve MCP (works on Resolve **Free**)
 
+[![Release](https://img.shields.io/github/v/release/justhung69/resolve-mcp)](https://github.com/justhung69/resolve-mcp/releases/latest)
+[![License: MIT](https://img.shields.io/github/license/justhung69/resolve-mcp)](LICENSE)
+![DaVinci Resolve](https://img.shields.io/badge/DaVinci%20Resolve-21.0.4%20Free-233A51)
+![Platform](https://img.shields.io/badge/platform-Windows%2011-0078D6)
+![Python](https://img.shields.io/badge/python-3.14-3776AB)
+![MCP](https://img.shields.io/badge/MCP%20SDK-2.3.0-6E56CF)
+[![Local tests](https://img.shields.io/badge/local%20tests-99%2F99%20passing-brightgreen)](#tests)
+[![Coverage matrix](https://img.shields.io/badge/coverage-honest%20matrix-blue)](COVERAGE.md)
+
 Let Claude (Claude Desktop / Claude Code) control DaVinci Resolve through the official scripting API, verify every
 change by reading it back, and always know the real state of the project.
 
