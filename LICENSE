@@ -19,6 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-Parts of the behaviour (API traps, DRX codec usage) follow samuelgursky/davinci-resolve-mcp (MIT);
-see COVERAGE.md. DaVinci Resolve is a trademark of Blackmagic Design; this project is not affiliated with it.
