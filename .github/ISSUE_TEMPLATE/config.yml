@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/justhung69/resolve-mcp/security/advisories/new
+    about: Please report security problems privately, not as a public issue.
+  - name: What is possible on Resolve Free?
+    url: https://github.com/justhung69/resolve-mcp/blob/main/COVERAGE.md
+    about: Check the coverage matrix and measured quirks before requesting a feature.

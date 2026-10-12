@@ -1,0 +1,39 @@
+name: Resolve API quirk / measurement
+description: You measured Resolve behaving differently from its Scripting README (or from COVERAGE.md).
+labels: [quirk]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Measured facts are the most valuable contribution here. Please describe exactly how you measured it.
+  - type: input
+    id: resolve
+    attributes:
+      label: DaVinci Resolve version and edition
+      placeholder: 21.0.4.5 Free
+    validations:
+      required: true
+  - type: input
+    id: method
+    attributes:
+      label: API method(s)
+      placeholder: TimelineItem.GetSourceEndFrame
+    validations:
+      required: true
+  - type: textarea
+    id: readme
+    attributes:
+      label: What the Scripting README says
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: What actually happens
+      description: Include the calls you made and the values returned, plus pixels/screenshots if visual.
+    validations:
+      required: true
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround (if you found one)

@@ -93,6 +93,7 @@ Based on reviewing the repos in October 2026 (Tooflex only from its directory li
 * `python_exec` (raw Python inside Resolve) is **off** unless you set `"allow_exec": true` in
   `%LOCALAPPDATA%\ResolveMCP\config.json`.
 * Found a security problem? See [SECURITY.md](SECURITY.md) - please report it privately.
+* Want to help? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### Tests
 ```
@@ -188,6 +189,7 @@ Dựa trên lần xem các repo vào tháng 10/2026 (Tooflex chỉ dựa trên t
 * Chỉ mở cổng trên 127.0.0.1, không gửi gì lên mạng, không telemetry.
 * `python_exec` (chạy Python tùy ý trong Resolve) **tắt** mặc định.
 * Phát hiện lỗ hổng bảo mật? Xem [SECURITY.md](SECURITY.md) - vui lòng báo riêng, không mở issue công khai.
+* Muốn đóng góp? Xem [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### Kiểm thử
 ```

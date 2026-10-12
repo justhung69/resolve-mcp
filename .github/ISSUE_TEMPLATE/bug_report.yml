@@ -1,0 +1,54 @@
+name: Bug report
+description: A tool failed, returned ok:false, or changed something it should not have.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Security problems: please **do not** use this form, see SECURITY.md.
+  - type: input
+    id: resolve
+    attributes:
+      label: DaVinci Resolve version
+      description: Help → About. The project targets 21.0.4 Free.
+      placeholder: 21.0.4.5 Free
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Windows / Python / MCP client
+      placeholder: Windows 11 26200, Python 3.14.5, Claude Desktop
+    validations:
+      required: true
+  - type: input
+    id: tool
+    attributes:
+      label: Tool name and arguments
+      placeholder: 'timeline_action(action="duplicate", name="v2")'
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened vs. what you expected
+      description: Paste the tool result. `requested` / `actual` / `notes` are the most useful parts.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: oplog
+    attributes:
+      label: Op log lines (optional)
+      description: Last lines of %LOCALAPPDATA%\ResolveMCP\oplog.jsonl. Remove file paths or names you consider private.
+      render: text
+  - type: dropdown
+    id: tests
+    attributes:
+      label: Does tests\run_tests.py pass on your machine?
+      options:
+        - "Yes, all pass"
+        - "No, some fail (paste the FAIL lines above)"
+        - "Did not run"
+    validations:
+      required: true
