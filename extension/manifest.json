@@ -1,0 +1,39 @@
+{
+  "manifest_version": "0.3",
+  "name": "resolve-mcp",
+  "display_name": "DaVinci Resolve (Free)",
+  "version": "1.1.0",
+  "description": "Let Claude control DaVinci Resolve 21.0.4 Free: edit, color grade with power windows, render, verify every change.",
+  "long_description": "Talks to the ClaudeBridge script running inside DaVinci Resolve (Workspace > Scripts > ClaudeBridge) over a token-protected loopback socket. Requires the repository installed with install.ps1; this extension only points Claude at it. Local only: no cloud calls, no telemetry.",
+  "author": { "name": "Bùi Xuân Hưng", "url": "https://github.com/justhung69" },
+  "repository": { "type": "git", "url": "https://github.com/justhung69/resolve-mcp" },
+  "homepage": "https://justhung69.github.io/resolve-mcp/",
+  "documentation": "https://github.com/justhung69/resolve-mcp#readme",
+  "support": "https://github.com/justhung69/resolve-mcp/issues",
+  "icon": "icon.png",
+  "license": "MIT",
+  "keywords": ["davinci resolve", "video editing", "color grading", "mcp"],
+  "server": {
+    "type": "python",
+    "entry_point": "server/launch.py",
+    "mcp_config": {
+      "command": "${user_config.install_dir}/.venv/Scripts/python.exe",
+      "args": ["${__dirname}/server/launch.py", "${user_config.install_dir}"],
+      "env": { "PYTHONIOENCODING": "utf-8" }
+    }
+  },
+  "tools_generated": true,
+  "user_config": {
+    "install_dir": {
+      "type": "directory",
+      "title": "resolve-mcp folder",
+      "description": "The cloned repository where you ran install.ps1 (it contains .venv and server/mcp_server.py).",
+      "required": true,
+      "default": "${HOME}/resolve-mcp"
+    }
+  },
+  "compatibility": {
+    "platforms": ["win32"],
+    "runtimes": { "python": ">=3.10" }
+  }
+}

@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 tests/last_run.txt
 tests/last_results.json
+dist/

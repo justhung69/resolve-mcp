@@ -48,7 +48,19 @@ Claude ──MCP (stdio)──> server/mcp_server.py ──JSON over 127.0.0.1:4
    It creates `.venv`, installs the `mcp` package (asks first), copies the bridge into Resolve's Scripts folder,
    and registers the server in Claude Desktop (backing up your config first). It prints the `claude mcp add ...`
    command for Claude Code.
-3. Restart Claude Desktop.
+3. **Recommended: install the Desktop Extension** (survives Claude Desktop rewriting its config file, and is the
+   way to reach Cowork): download `resolve-mcp-<version>.mcpb` from the
+   [latest release](https://github.com/justhung69/resolve-mcp/releases/latest), then in Claude Desktop open
+   **Settings → Extensions → Advanced settings → Install Extension…**, pick the file, and set *resolve-mcp folder* to
+   this folder. (Build it yourself with `.venv\Scripts\python.exe tools\build_mcpb.py`.)
+   If you keep the config-file entry from step 2 as well, remove one of them so the tools are not listed twice.
+4. Restart Claude Desktop.
+
+> **Note:** Claude Desktop rewrites `claude_desktop_config.json` from memory when it saves settings, so entries
+> added while the app is running can disappear. Edit the file only with Claude Desktop fully closed, or use the
+> extension. **Cowork** runs in a VM; whether it receives local extensions depends on the Claude Desktop version
+> (a forwarding bug was reported in anthropics/claude-code#26259). The server itself must run on Windows, next to
+> Resolve.
 
 ### Every session
 1. Open Resolve and a project.
@@ -151,7 +163,19 @@ Bản Resolve **Free** chặn script chạy từ bên ngoài, nhưng vẫn cho c
    ```
    Script sẽ: tạo `.venv`, cài gói `mcp` (có hỏi trước), chép bridge vào thư mục Scripts của Resolve, đăng ký
    server vào Claude Desktop (**sao lưu file cấu hình trước khi sửa**), và in lệnh `claude mcp add ...` cho Claude Code.
-3. Khởi động lại Claude Desktop.
+3. **Khuyên dùng: cài Desktop Extension.** Cách này không bị mất khi Claude Desktop ghi đè file cấu hình, và
+   là cách để dùng được trong Cowork:
+   1. Tải `resolve-mcp-<version>.mcpb` ở [bản phát hành mới nhất](https://github.com/justhung69/resolve-mcp/releases/latest).
+   2. Trong Claude Desktop, mở **Settings → Extensions → Advanced settings → Install Extension…**, chọn file vừa tải.
+   3. Đặt *resolve-mcp folder* là thư mục này.
+
+   Nếu vẫn giữ mục cấu hình ở bước 2 thì xoá một trong hai, để tool không bị hiện hai lần.
+4. Khởi động lại Claude Desktop.
+
+> **Lưu ý:** Claude Desktop ghi lại file `claude_desktop_config.json` từ bộ nhớ mỗi khi lưu cài đặt. Vì vậy mục nào
+> được thêm trong lúc app đang chạy có thể bị mất. Chỉ sửa file khi đã thoát hẳn Claude Desktop, hoặc dùng extension.
+> **Cowork** chạy trong máy ảo, nên có nhận extension cục bộ hay không còn tuỳ phiên bản Claude Desktop. Server vẫn
+> phải chạy trên Windows, cùng máy với Resolve.
 
 ### Mỗi lần làm việc
 1. Mở Resolve và mở một project.
