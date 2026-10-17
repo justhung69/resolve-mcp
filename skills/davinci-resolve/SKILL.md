@@ -1,6 +1,6 @@
 ---
 name: davinci-resolve
-description: Edit, color grade and render in DaVinci Resolve (Free, 21.0.4, Windows) through the resolve-mcp MCP server, verifying every change. Use when the user asks to do anything in DaVinci Resolve - import media, build or cut timelines, trim, add transitions or speed changes, add markers, color grade (LUT, wheels, power windows), keyframe zoom/position/opacity, fix audio levels, render/export, or inspect or clean up a Resolve project. Also use when the user mentions Resolve, DaVinci, a .drp project, the Edit/Color/Fusion/Fairlight/Deliver page, or asks why a Resolve change "did not stick".
+description: Use when the user asks to edit, cut, color grade, keyframe, fix audio in, render or inspect a project in DaVinci Resolve - e.g. "cut clip 3 at 5 seconds", "add a cross dissolve between every clip", "brighten the subject with a circle window", "render this timeline for YouTube", "what changed in my Resolve project". Also use when the user mentions Resolve, DaVinci, a .drp project or the Edit/Color/Fusion/Fairlight/Deliver page. Drives DaVinci Resolve 21.0.4 Free on Windows through the resolve-mcp MCP server and verifies every change.
 ---
 
 # DaVinci Resolve via resolve-mcp
@@ -87,7 +87,20 @@ Version quirks are recorded in the repo's `COVERAGE.md`. Examples:
 - ExportLUT only works on the Color page.
 - New projects are not listed until saved.
 
-## 6. Troubleshooting
+## 6. How to report back to the user
+After each task, reply in this shape (short, in the user's language):
+1. **Done**: what changed, from `diff_state` or the `actual` values, not from what was requested.
+2. **Where**: project, timeline (name the *new* timeline if a workaround made one) and the clips affected.
+3. **Check**: the `frame_preview` image path for visual changes, and any `ok: false` or `verified: null`
+   item with the reason.
+4. **Undo**: how to go back. Examples: the original timeline is untouched, the old grade is in version
+   `Claude backup <time>`, or the .drp backup path.
+
+If something could not be done, say which limit from section 5 applies and offer the UI steps.
+
+Setup and quirk details are in `references/setup.md` and `references/quirks.md`.
+
+## 7. Troubleshooting
 | Symptom | Fix |
 |---|---|
 | `bridge not running` / `token mismatch` | Click Workspace → Scripts → ClaudeBridge again, then retry |
